@@ -1,63 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Home Phototherapy Booking Form</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <meta charset="UTF-8">
+  <title>Home Phototherapy Booking</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; border: none; }
+  </style>
 </head>
 <body>
-  <h2>Home Phototherapy Booking Form</h2>
-  <form id="invoiceForm">
-    <label>Name: <input type="text" id="name" required></label><br><br>
-    <label>Contact No: <input type="text" id="contact" required></label><br><br>
-    <label>Address: <textarea id="address" required></textarea></label><br><br>
 
-    <label>Package:</label><br>
-    <input type="radio" name="package" value="72 hours" checked> 72 hours<br>
-    <input type="radio" name="package" value="48 hours"> 48 hours<br><br>
+  <h2>Book Home Phototherapy</h2>
 
-    <label>Additional Jaundice Meter?</label><br>
-    <input type="radio" name="meter" value="Yes" checked> Yes<br>
-    <input type="radio" name="meter" value="No"> No<br><br>
+  <form id="bookingForm">
+    <label>Name:
+      <input type="text" id="name" required>
+    </label>
 
-    <button type="submit">Generate Invoice</button>
+    <label>Contact No:
+      <input type="text" id="contact" required>
+    </label>
+
+    <label>Address:
+      <input type="text" id="address" required>
+    </label>
+
+    <label>Package:
+      <select id="package" required>
+        <option value="72 hours">72 hours</option>
+        <option value="48 hours">48 hours</option>
+      </select>
+    </label>
+
+    <label>Include Jaundice Meter?
+      <select id="meter" required>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+    </label>
+
+    <button type="submit">Submit to Admin via WhatsApp</button>
   </form>
 
   <script>
-    document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
+      // Get values
       const name = document.getElementById('name').value;
       const contact = document.getElementById('contact').value;
       const address = document.getElementById('address').value;
-      const package = document.querySelector('input[name="package"]:checked').value;
-      const meter = document.querySelector('input[name="meter"]:checked').value;
+      const pkg = document.getElementById('package').value;
+      const meter = document.getElementById('meter').value;
 
-      // Pricing logic
-      let basePrice = package === '72 hours' ? 300 : 250;
-      let meterPrice = meter === 'Yes' ? 50 : 0;
-      let total = basePrice + meterPrice;
+      // Format message
+      const message = `*New Booking - Home Phototherapy*%0A` +
+        `Name: ${name}%0A` +
+        `Contact No: ${contact}%0A` +
+        `Address: ${address}%0A` +
+        `Package: ${pkg}%0A` +
+        `Jaundice Meter: ${meter}`;
 
-      // Generate PDF
-      const docDefinition = {
-        content: [
-          { text: 'Home Phototherapy - E-Invoice', style: 'header' },
-          { text: `\nDate: ${new Date().toLocaleDateString()}` },
-          { text: `\nCustomer Details:\nName: ${name}\nContact: ${contact}\nAddress: ${address}` },
-          { text: `\nPackage: ${package}\nAdditional Jaundice Meter: ${meter}` },
-          { text: `\nTotal Amount: RM ${total}` }
-        ],
-        styles: {
-          header: {
-            fontSize: 18,
-            bold: true,
-            alignment: 'center'
-          }
-        }
-      };
+      // WhatsApp number (use admin's phone number with country code, no + or spaces)
+      const adminNumber = "60149406525"; // ← Change this to your actual number!
 
-      pdfMake.createPdf(docDefinition).download(`Invoice_${name}.pdf`);
+      // Open WhatsApp chat
+      const whatsappUrl = `https://wa.me/${adminNumber}?text=${message}`;
+      window.open(whatsappUrl, '_blank');
     });
   </script>
+
 </body>
 </html>
