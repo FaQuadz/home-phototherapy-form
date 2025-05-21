@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Phototherapy Booking Form</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+</head>
+<body>
+  <h2>Home Phototherapy Booking Form</h2>
+  <form id="invoiceForm">
+    <label>Name: <input type="text" id="name" required></label><br><br>
+    <label>Contact No: <input type="text" id="contact" required></label><br><br>
+    <label>Address: <textarea id="address" required></textarea></label><br><br>
+
+    <label>Package:</label><br>
+    <input type="radio" name="package" value="72 hours" checked> 72 hours<br>
+    <input type="radio" name="package" value="48 hours"> 48 hours<br><br>
+
+    <label>Additional Jaundice Meter?</label><br>
+    <input type="radio" name="meter" value="Yes" checked> Yes<br>
+    <input type="radio" name="meter" value="No"> No<br><br>
+
+    <button type="submit">Generate Invoice</button>
+  </form>
+
+  <script>
+    document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const contact = document.getElementById('contact').value;
+      const address = document.getElementById('address').value;
+      const package = document.querySelector('input[name="package"]:checked').value;
+      const meter = document.querySelector('input[name="meter"]:checked').value;
+
+      // Pricing logic
+      let basePrice = package === '72 hours' ? 300 : 250;
+      let meterPrice = meter === 'Yes' ? 50 : 0;
+      let total = basePrice + meterPrice;
+
+      // Generate PDF
+      const docDefinition = {
+        content: [
+          { text: 'Home Phototherapy - E-Invoice', style: 'header' },
+          { text: `\nDate: ${new Date().toLocaleDateString()}` },
+          { text: `\nCustomer Details:\nName: ${name}\nContact: ${contact}\nAddress: ${address}` },
+          { text: `\nPackage: ${package}\nAdditional Jaundice Meter: ${meter}` },
+          { text: `\nTotal Amount: RM ${total}` }
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            bold: true,
+            alignment: 'center'
+          }
+        }
+      };
+
+      pdfMake.createPdf(docDefinition).download(`Invoice_${name}.pdf`);
+    });
+  </script>
+</body>
+</html>
