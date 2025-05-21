@@ -4,58 +4,123 @@
   <meta charset="UTF-8">
   <title>Home Phototherapy Booking</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 100%; padding: 8px; margin-top: 5px; }
-    button { margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; border: none; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #d0e7f9, #f6faff);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      background: #fff;
+      margin: 60px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0077b6;
+    }
+
+    .icon {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: #00b4d8;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #00b4d8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0096c7;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 15px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
 
-  <h2>Book Home Phototherapy</h2>
+  <div class="container">
+    <div class="icon">🍼</div>
+    <h2>Home Phototherapy Booking</h2>
 
-  <form id="bookingForm">
-    <label>Name:
-      <input type="text" id="name" required>
-    </label>
+    <form id="bookingForm">
+      <label>Name:
+        <input type="text" id="name" required>
+      </label>
 
-    <label>Contact No:
-      <input type="text" id="contact" required>
-    </label>
+      <label>Contact No:
+        <input type="text" id="contact" required>
+      </label>
 
-    <label>Address:
-      <input type="text" id="address" required>
-    </label>
+      <label>Address:
+        <input type="text" id="address" required>
+      </label>
 
-    <label>Package:
-      <select id="package" required>
-        <option value="72 hours">72 hours</option>
-        <option value="48 hours">48 hours</option>
-      </select>
-    </label>
+      <label>Package:
+        <select id="package" required>
+          <option value="72 hours">72 hours</option>
+          <option value="48 hours">48 hours</option>
+        </select>
+      </label>
 
-    <label>Include Jaundice Meter?
-      <select id="meter" required>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-    </label>
+      <label>Include Jaundice Meter?
+        <select id="meter" required>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label>
 
-    <button type="submit">Submit to Admin via WhatsApp</button>
-  </form>
+      <button type="submit">Submit via WhatsApp</button>
+    </form>
+
+    <div class="footer-note">
+      We’ll get in touch with you to confirm your booking.
+    </div>
+  </div>
 
   <script>
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // Get values
       const name = document.getElementById('name').value;
       const contact = document.getElementById('contact').value;
       const address = document.getElementById('address').value;
       const pkg = document.getElementById('package').value;
       const meter = document.getElementById('meter').value;
 
-      // Format message
       const message = `*New Booking - Home Phototherapy*%0A` +
         `Name: ${name}%0A` +
         `Contact No: ${contact}%0A` +
@@ -63,10 +128,8 @@
         `Package: ${pkg}%0A` +
         `Jaundice Meter: ${meter}`;
 
-      // WhatsApp number (use admin's phone number with country code, no + or spaces)
-      const adminNumber = "60123456789"; // ← Change this to your actual number!
+      const adminNumber = "60149406525"; // Change this to your actual number
 
-      // Open WhatsApp chat
       const whatsappUrl = `https://wa.me/${adminNumber}?text=${message}`;
       window.open(whatsappUrl, '_blank');
     });
